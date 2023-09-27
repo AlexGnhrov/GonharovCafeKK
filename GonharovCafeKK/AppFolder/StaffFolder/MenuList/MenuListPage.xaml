@@ -1,0 +1,860 @@
+﻿<Page x:Class="GonharovCafeKK.AppFolder.MenuList.MenuListPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GonharovCafeKK.AppFolder.MenuList"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Меню">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="375"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="170"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="AddDishBtn" Content="Новое блюдо" Grid.Column="2" Margin="10,5" Click="AddDishBtn_Click"/>
+
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="65"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="SearchTB" Margin="5,5,0,5" Style="{DynamicResource SearcthTextBox}" KeyDown="SearchTB_KeyDown" Grid.ColumnSpan="2" TextChanged="SearchTB_TextChanged"/>
+                <Label Name="RemoveSearchTextLB" Content="❌" Grid.Column="1"
+                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                       FontSize="15" Cursor="Hand" Margin="3,10,3,13" MouseLeftButtonUp="Label_MouseLeftButtonUp" Visibility="Collapsed"/>
+                <Button x:Name="SearchBT" Grid.Column="2" Margin="0,5,10,5" Style="{DynamicResource SearchButton}" Click="SearchBT_Click">
+                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/SearchIcon.png" Height="25" Width="30" VerticalAlignment="Bottom" Margin="2,2,2,-5"/>
+                </Button>
+            </Grid>
+        </Grid>
+
+        <ScrollViewer x:Name="ScrollSV" Grid.Row="2" Grid.Column="1"
+                      VerticalScrollBarVisibility="Auto"
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" Template="{DynamicResource ScrollViewerControlTemplate1}" Margin="5,10">
+            <StackPanel Grid.Row="2" Grid.Column="1" >
+
+
+                <StackPanel x:Name="GrillChesseSP" Margin="0,10,0,5" >
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Гриль Чиз" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="GrillChesseLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Name="GrillChessEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="GrillChessRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="SeasonSP" Margin="0,5" >
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Сезонное меню" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="SeasonLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="SeasonEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="SeasonRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button x:Name="AddSeasonBtn" Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="KroshkaKartoskaSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Крошка Картошка" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="KroshkaKartoskaLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="KroshkaKartoskaEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="KroshkaKartoskaRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button x:Name="AddKroskaKartBtn" Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="FillerSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Наполнители" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="FillerLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="FillerEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="FillerRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="SaladSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Салаты" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="SaladLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="SaladEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="SaladRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="SoupAndHotSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Супы и горячие блюда" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="SoupAndHotLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="SoupAndHotEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="SoupAndHotRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="SnacksSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Закуски" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="SnacksLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="SnacksEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="SnacksRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </StackPanel>
+
+                <StackPanel x:Name="SandvichesAndRollsSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Сэндвичи и роллы" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="SandvichesAndRollsLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="SandvichesAndRollsEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="SandvichesAndRollsRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button x:Name="AddSandvichesAndRollsBtn" Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}" Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="DesertesSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Десерты" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="DesertesLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="DesertesEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="DesertesRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button x:Name="AddDesertesBtn" Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}"  Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+
+
+                </StackPanel>
+
+                <StackPanel x:Name="DrinksSP" Margin="0,5">
+                    <Border CornerRadius="20,20,0,0" Style="{StaticResource MenuBorderLV}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Напитки" Style="{StaticResource MenuLabelLV}" Margin="20,5,5,5"/>
+                        </Grid>
+                    </Border>
+
+                    <ListView x:Name="DrinksLV" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="auto" >
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Name="DrinksEditMI" Header="Редактировать" Click="EditMenu_Click" />
+                                <Separator/>
+                                <MenuItem Name="DrinksRemoveMI" Header="Удалить" Click="RemoveMenu_Click" />
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="325" Height="290" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="175"/>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/tyrext.jpg"
+                                           Stretch="UniformToFill" Width="235" Margin="10"/>
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="45"/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="45"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="#FF5B41" Grid.Column="1" CornerRadius="25" Opacity="{Binding isHit}">
+                                            <TextBlock Text="HIT"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+
+                                        <Border Background="#FFB400" Grid.Column="1" CornerRadius="25" Opacity="{Binding isNew}">
+                                            <TextBlock Text="NEW"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                                        </Border>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding NameDish}"
+                                               Grid.Row="1" Style="{DynamicResource TextForMenuTBl}"/>
+
+                                    <Grid Grid.Row="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="145"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding Price,StringFormat={}{0} ₽}" Style="{DynamicResource TextForMenuTBl}" FontWeight="Bold" FontSize="19"/>
+
+
+                                        <Button x:Name="AddDrinkBtn" Content="Добавить" Grid.Column="2" Style="{DynamicResource ButtonForMenuLV}"  Click="AddToOrder_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+
+
+                </StackPanel>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

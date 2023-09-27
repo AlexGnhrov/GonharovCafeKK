@@ -1,0 +1,175 @@
+﻿<Window x:Class="GonharovCafeKK.AppFolder.ResourceFolder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GonharovCafeKK.AppFolder.ResourceFolder"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        Background="{x:Null}"
+        ResizeMode="CanResizeWithGrip"
+        Title="{Binding ElementName=MainFrame,Path=Content.Title}"
+        Height="800" Width="1200"
+        MinHeight="800" MinWidth="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="White" CornerRadius="5" Grid.Column="1" Grid.Row="1">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="-10"/>
+            </Border.Effect>
+        </Border>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="LeftColumnCD" Width="225"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Background="#538910" CornerRadius="5,0,0,5" Grid.RowSpan="2"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition x:Name="UserDataRD" Height="195"/>
+                    <RowDefinition />
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="65"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="65"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Name="ExpandColumnLB" Content="❱" Style="{DynamicResource ArrowLB}"
+                           MouseLeftButtonUp="ExpandShrinkeColumnLB_MouseLeftButtonUp" Visibility="Hidden" />
+
+                    <Label Name="ShrinkeColumnLB" Content="❰" Grid.Column="2" MouseLeftButtonUp="ExpandShrinkeColumnLB_MouseLeftButtonUp"
+                           Style="{DynamicResource ArrowLB}" />
+                </Grid>
+
+                <StackPanel x:Name="UserDataSP" Grid.Row="1">
+                    <Ellipse Width="128" Height="128" Margin="0" Stroke="White" StrokeThickness="2" >
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="ProfilePhotoIB" Stretch="UniformToFill" ImageSource="ResourceFolder/Image/Portrait_Placeholder.png" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <TextBlock Name="SNPworkerTBl" Foreground="White"
+                           FontSize="16" FontWeight="SemiBold" Margin="10"
+                           Text="Христорождественский И.О." HorizontalAlignment="Center"
+                            TextWrapping="Wrap" TextAlignment="Center"/>
+
+                </StackPanel>
+
+
+                <StackPanel Grid.Row="2">
+                    <Button x:Name="UserListBtn" Height="65"
+                            Style="{DynamicResource MenuButton}" Click="MenuButtons_Click">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" Background="Red" Opacity="0" Margin="-13.5,-8"/>
+                            <Image Source="ResourceFolder/Image/UsersIcon.png" Margin="2" />
+                            <TextBlock x:Name="UserTB" Text="Сотрудники" Grid.Column="1"
+                                       Style="{DynamicResource TextForMenuButtons}"
+                                       Margin="10,10,50,10"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="MenuListBtn" Height="65" Width="auto"
+                            Style="{DynamicResource MenuButton}" Click="MenuButtons_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" Background="Red" Opacity="0" Margin="-13.5,-8"/>
+                            <Image Source="ResourceFolder/Image/MenuIcon.png" Margin="2" />
+                            <TextBlock x:Name="MenuTB" Text="Меню" Grid.Column="1" 
+                                       Style="{DynamicResource TextForMenuButtons}" Margin="10,10,95,10"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="OrderListBtn" Width="auto"
+                            Height="65"
+                            Style="{DynamicResource MenuButton}"  Click="MenuButtons_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.ColumnSpan="2" Background="Red" Opacity="0" Margin="-13.5,-8"/>
+                            <Image Source="ResourceFolder/Image/OrderIcon.png" Margin="2" />
+                            <TextBlock x:Name="OrderTB" Text="Заказы" Grid.Column="1" 
+                                       Style="{DynamicResource TextForMenuButtons}" Margin="10,10,86,10"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+
+
+                <Button x:Name="ExitBtn"  Style="{DynamicResource MenuButton}" Grid.Row="3" Click="ExitBtn_Click" Margin="0" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.ColumnSpan="2" Background="Red" Opacity="0" Margin="-13.5,-8"/>
+                        <Image Source="ResourceFolder/Image/ExitIcon.png" Margin="0,2,3,2" />
+                        <TextBlock x:Name="ExitTB" Text="Выйти" Grid.Column="1" 
+                                       Style="{DynamicResource TextForMenuButtons}" Margin="10,10,90,10"  />
+                    </Grid>
+                </Button>
+            </Grid>
+
+            <Label Name="RoleNameLB" Content="Менеджер"
+                   Foreground="White" FontWeight="SemiBold"
+                   FontSize="16" HorizontalContentAlignment="Center" Margin="5,5,5,0"/>
+
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="158*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="90"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border Background="#FF236602" Width="50" CornerRadius="5" Margin="458,0,439.5,0"/>
+                <Label Style="{StaticResource MainLB}"
+                       Content="{Binding ElementName=MainFrame,Path=Content.Title}" Margin="0" Grid.Row="1" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                <Frame x:Name="MainFrame" Grid.Row="2" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2" PreviewMouseUp="SomeElement_PreviewMouseDown"/>
+            </Grid>
+
+            <Frame x:Name="AddEditFrame"  Grid.ColumnSpan="2" Grid.RowSpan="2" NavigationUIVisibility="Hidden" PreviewMouseUp="SomeElement_PreviewMouseDown"/>
+
+            <Border Background="Red" Opacity="0" Grid.ColumnSpan="2" MouseLeftButtonDown="Border_MouseLeftButtonDown"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="HideBtn" Content="—" Style="{DynamicResource BtnRoof}" Click="RoofBtn_Click"/>
+                <Button x:Name="ResizeBtn" Content="☐" Style="{DynamicResource BtnRoof}" Click="RoofBtn_Click"/>
+                <Button x:Name="CloseBtn" Content="❌" Style="{DynamicResource ExitBtnRoof}" Click="RoofBtn_Click" FontSize="14"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

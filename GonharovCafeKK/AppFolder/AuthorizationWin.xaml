@@ -1,0 +1,123 @@
+﻿<Window x:Class="GonharovCafeKK.AppFolder.AuthorizationWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GonharovCafeKK.AppFolder"
+        mc:Ignorable="d"
+        Title="Авторизация" 
+        WindowStyle="None"
+        Background="{x:Null}"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        Height="410" Width="710"
+        MinHeight="410" MinWidth="710"
+        MaxHeight="410" MaxWidth="710">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="370"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="396"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border  CornerRadius="5"
+                 Grid.ColumnSpan="2" Grid.RowSpan="2">
+                <Border.Background>
+                    <ImageBrush ImageSource="ResourceFolder/Image/BackgroundAutho.png" Stretch="UniformToFill"/>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect  ShadowDepth="-10"/>
+                </Border.Effect>
+            </Border>
+
+            <Grid Grid.Row="1" Margin="30,0,15,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="105"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Border Background="White" Grid.RowSpan="2" CornerRadius="25"/>
+
+                <Label Content="Авторизация"  Style="{StaticResource MainLB}" Margin="10,36,10,10"/>
+
+                <StackPanel Grid.Row="1" Margin="20,10">
+                    <Grid Height="50" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBox x:Name="LoginTB" Margin="5" Grid.ColumnSpan="2"
+                                 Padding="45,0,5,0" MaxLength="30" TextChanged="LoginTB_TextChanged" KeyDown="Text_KeyDown"/>
+                        
+                        <Border Background="Green" CornerRadius="30">
+                            <Image Source="ResourceFolder/Image/LoginIcon.png" Margin="10" />
+                        </Border>
+                    </Grid>
+
+                    <Grid Height="50" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <PasswordBox x:Name="PasswordPB" 
+                                     Margin="5" Grid.ColumnSpan="2" MaxLength="30" 
+                                     Padding="45,0,0,0" PasswordChanged="PasswordPB_PasswordChanged" 
+                                     KeyDown="Text_KeyDown"/>
+                        
+                        <Border Background="Green" CornerRadius="30">
+                            <Image Source="ResourceFolder/Image/PasswordIcon.png" Margin="10"/>
+                        </Border>
+                    </Grid>
+                    <Button x:Name="EnterBT" Content="Войти" Height="45" Width="155" Margin="20" Click="EnterBT_Click"/>
+                </StackPanel>
+
+            </Grid>
+
+
+            <Border Background="White" CornerRadius="5,5,0,0" Opacity="0"
+                Grid.ColumnSpan="2"
+                MouseLeftButtonDown="Border_MouseLeftButtonDown"/>
+
+            <Grid Grid.Column="1"  Margin="0,0,0,355" Grid.RowSpan="2">
+                <StackPanel HorizontalAlignment="Right" Margin="0,0,2,0" Orientation="Horizontal" Width="auto">
+
+                    <Label Name="CloseLB" Content="❌" FontWeight="SemiBold" Margin="1,2,1,1" Width="33"                         
+                            MouseLeftButtonUp="CloseLB_MouseLeftButtonUp">
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="LightGray" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
