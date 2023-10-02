@@ -19,14 +19,14 @@ namespace GonharovCafeKK.AppFolder.EntityFolder
         public byte[] Photo { get; set; }
         public int Price { get; set; }
         public string Composition { get; set; }
-        public int WeightDishGR { get; set; }
-        public double Calories { get; set; }
-        public double Fat { get; set; }
-        public double Protein { get; set; }
-        public double Carb { get; set; }
-        public Nullable<bool> isNew { get; set; }
-        public Nullable<bool> isHit { get; set; }
-        public Nullable<bool> isSeason { get; set; }
+        public Nullable<int> WeightDishGR { get; set; }
+        public Nullable<double> Calories { get; set; }
+        public Nullable<double> Fat { get; set; }
+        public Nullable<double> Protein { get; set; }
+        public Nullable<double> Carb { get; set; }
+        public bool isNew { get; set; }
+        public bool isHit { get; set; }
+        public bool isSeason { get; set; }
         public int DishCategoryID { get; set; }
     
         public virtual DishCategory DishCategory { get; set; }

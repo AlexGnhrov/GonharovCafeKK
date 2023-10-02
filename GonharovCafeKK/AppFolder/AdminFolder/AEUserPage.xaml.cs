@@ -1,20 +1,12 @@
-﻿using GonharovCafeKK.AppFolder.EntityFolder;
+﻿using GonharovCafeKK.AdminFolder;
+using GonharovCafeKK.AppFolder.EntityFolder;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TC_Application.AppFolder.GlobalClassFolder;
 using Vimpel_Accounting.AppFolder.ClassFolder;
 
@@ -28,65 +20,75 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
         User user;
 
         Frame AEFrame;
-        DataGrid UserListDG;
-        TextBox SearchTB;
+        UserListPage userListPage;
+
 
         private string selectedPhoto = "";
 
-        public AEUserPage(Frame AEFrame, User user, DataGrid UserListDG, TextBox SearchTB)
+        public AEUserPage(Frame AEFrame ,UserListPage userListPage,User user)
         {
             this.AEFrame = AEFrame;
-            this.UserListDG = UserListDG;
-            this.SearchTB = SearchTB;
+            this.userListPage = userListPage;
 
+            userListPage.IsEnabled = false;
 
             InitializeComponent();
 
-            RoleCB.ItemsSource = DBEntities.GetContext().Role.ToList();
-            StatusUserCB.ItemsSource = DBEntities.GetContext().StatusUser.ToList();
-
-            PhoneNumTB.Text += "+7 ";
-            PhoneNumTB.CaretIndex = PhoneNumTB.Text.Length;
-
-            if (user != null)
+            try
             {
-                this.user = user;
+                RoleCB.ItemsSource = DBEntities.GetContext().Role.ToList();
+                StatusUserCB.ItemsSource = DBEntities.GetContext().StatusUser.ToList();
 
-                WinLB.Content = Title = "Редактирование рабочего";
-                AddEditBTN.Content = "Редактировать";
 
-                PhotoIB.ImageSource = LoadReadImageClass.GetImageFromBytes(user.Photo);
-                selectedPhoto = "Картинка кароче есть";
+                PhoneNumTB.Text += "+7 ";
+                PhoneNumTB.CaretIndex = PhoneNumTB.Text.Length;
 
-                LoginTB.Text = user.Login;
-                PasswordTB.Text = user.Password;
+                StatusUserCB.SelectedValue = 1;
 
-                SNPworkerTB.Text = $"{user.Surname} {user.Name}";
-
-                if (user.Patronymic != null)
+                if (user != null)
                 {
-                    SNPworkerTB.Text += $" {user.Patronymic}";
+                    this.user = user;
+
+                    if(user.UserID == 1)
+                    {
+                        StatusUserCB.IsEnabled = false;
+                    }
+
+                    WinLB.Content = Title = "Редактирование сотрудника";
+                    AddEditBTN.Content = "Редактировать";
+
+                    PhotoIB.ImageSource = LoadReadImageClass.GetImageFromBytes(user.Photo);
+                    selectedPhoto = "Картинка кароче есть";
+
+                    LoginTB.Text = user.Login;
+                    PasswordTB.Text = user.Password;
+
+                    SNPworkerTB.Text = $"{user.Surname} {user.Name}";
+
+                    if (user.Patronymic != null)
+                    {
+                        SNPworkerTB.Text += $" {user.Patronymic}";
+                    }
+
+                    PhoneNumTB.Text = user.PhoneNum;
+
+                    RoleCB.SelectedValue = user.RoleID;
+                    StatusUserCB.SelectedValue = user.StatusID;
+
+                    AddEditBTN.IsEnabled = false;
                 }
+            }
+            catch (Exception ex)
+            {
 
-                PhoneNumTB.Text = user.PhoneNum;
-
-                RoleCB.SelectedValue = user.RoleID;
-                StatusUserCB.SelectedValue = user.StatusID;
+                MBClass.Error(ex, "Ошибка выгрузки данных");
+                userListPage.IsEnabled = true;
             }
 
         }
 
 
 
-        private void UpdateList()
-        {
-            UserListDG.ItemsSource = DBEntities.GetContext().User.Where(u => u.Surname.Contains(SearchTB.Text)
-                                                                           || u.Name.Contains(SearchTB.Text)
-                                                                           || u.Patronymic.Contains(SearchTB.Text)
-                                                                           || u.Login.Contains(SearchTB.Text)
-                                                                           || u.Role.NameRole.Contains(SearchTB.Text)
-                                                                           || u.StatusUser.NameStatus.Contains(SearchTB.Text)).ToList();
-        }
 
 
         private void AddEditBTN_Click(object sender, RoutedEventArgs e)
@@ -106,7 +108,7 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
         {
             try
             {
-                var checkUser = DBEntities.GetContext().User.FirstOrDefault(u => u.Login == LoginTB.Text);
+                var checkUser = DBEntities.GetContext().User.FirstOrDefault(u => u.Login == LoginTB.Text.Trim());
 
                 if (checkUser != null)
                 {
@@ -118,8 +120,8 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
                 user.Photo = LoadReadImageClass.SetImageToBytes(selectedPhoto);
 
-                user.Login = LoginTB.Text;
-                user.Password = PasswordTB.Text;
+                user.Login = LoginTB.Text.Trim();
+                user.Password = PasswordTB.Text.Trim();
 
                 string[] splitSNP = SNPworkerTB.Text.Split(' ');
 
@@ -130,7 +132,7 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
                     user.Patronymic = splitSNP[2].Trim();
                 }
 
-                user.PhoneNum = PhoneNumTB.Text;
+                user.PhoneNum = PhoneNumTB.Text.Trim();
                 user.RoleID = (int)RoleCB.SelectedValue;
                 user.StatusID = (int)StatusUserCB.SelectedValue;
 
@@ -140,8 +142,10 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
                 MBClass.Info("Рабочий успешно добавлен!");
 
-                UpdateList();
+                userListPage.UpdateList();
+                userListPage.IsEnabled = true;
                 AEFrame.Navigate(null);
+
 
 
             }
@@ -164,10 +168,10 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
                         MBClass.Error("Данный логин уже существует");
                         return;
                     }
-                    user.Login = LoginTB.Text;
+                    user.Login = LoginTB.Text.Trim();
                 }
 
-                user.Password = PasswordTB.Text;
+                user.Password = PasswordTB.Text.Trim();
 
 
                 if (selectedPhoto != "Картинка кароче есть")
@@ -183,7 +187,7 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
                     user.Patronymic = splitSNP[2].Trim();
                 }
 
-                user.PhoneNum = PhoneNumTB.Text;
+                user.PhoneNum = PhoneNumTB.Text.Trim();
                 user.RoleID = (int)RoleCB.SelectedValue;
                 user.StatusID = (int)StatusUserCB.SelectedValue;
 
@@ -192,7 +196,9 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
                 MBClass.Info("Рабочий успешно отредактирован!");
 
-                UpdateList();
+                userListPage.UpdateList();
+                userListPage.IsEnabled = true;
+
                 AEFrame.Navigate(null);
 
             }
@@ -305,6 +311,7 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
             string[] splitSNP = SNPworkerTB.Text.Split(' ');
 
             if (string.IsNullOrWhiteSpace(LoginTB.Text) ||
+                string.IsNullOrWhiteSpace(PasswordTB.Text) ||
                 string.IsNullOrWhiteSpace(SNPworkerTB.Text) ||
                 string.IsNullOrWhiteSpace(PhoneNumTB.Text) ||
                 RoleCB.SelectedValue == null ||
@@ -327,14 +334,24 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
         private void Label_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            userListPage.IsEnabled = true;
             AEFrame.Navigate(null);
-
-
         }
 
         private void StatusUserCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EnableButton();
+        }
+
+        private void Page_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                if(AddEditBTN.IsEnabled)
+                {
+                    AddEditBTN_Click(sender, e);
+                }
+            }
         }
     }
 }

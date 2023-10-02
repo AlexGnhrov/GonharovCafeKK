@@ -5,10 +5,257 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GonharovCafeKK.AppFolder"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="1200"
       Title="Заказы">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="375"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="190"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="65"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="SearchTB" Margin="5,5,0,5" Style="{DynamicResource SearcthTextBox}" KeyDown="SearchTB_KeyDown" Grid.ColumnSpan="2" TextChanged="SearchTB_TextChanged"/>
+            <Label Name="RemoveSearchTextLB" Content="❌" Grid.Column="1"
+                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                       FontSize="15" Cursor="Hand" Margin="3,10,3,13" MouseLeftButtonUp="Label_MouseLeftButtonUp" Visibility="Collapsed"/>
+            <Button x:Name="SearchBT" Grid.Column="2" Margin="0,5,10,5" Style="{DynamicResource SearchButton}" Click="SearchBT_Click">
+                <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/SearchIcon.png" Height="25" Width="30" VerticalAlignment="Bottom" Margin="2,2,2,-5"/>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <ComboBox Name="SortCB"  Margin="5" Grid.Column="1" SelectionChanged="SortCB_SelectionChanged">
+                <ComboBoxItem Content="Всё"/>
+                <Separator/>
+                <ComboBoxItem Content="Сегодня"/>
+                <ComboBoxItem Content="За неделю"/>
+                <ComboBoxItem Content="За месяц"/>
+                <ComboBoxItem Content="За прошлый месяц"/>
+            </ComboBox>
+
+        </Grid>
+
+        <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  BorderThickness="0" Margin="10,0" >
+            <Grid>
+
+                <Border x:Name="BDRounder" BorderThickness="0" CornerRadius="5" Background="White"/>
+                <DataGrid x:Name="OrderListDG" CanUserResizeColumns="False" CanUserDeleteRows="False" VerticalScrollBarVisibility="Auto"
+                          CanUserSortColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False"
+                          HeadersVisibility="Column"  SelectionMode="Single" ScrollViewer.CanContentScroll="False"
+                          IsReadOnly="True" Margin="0,10,0,0" AlternatingRowBackground="#f8f8f8">
+                    <DataGrid.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=BDRounder}"/>
+                    </DataGrid.OpacityMask>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu Opened="ContextMenu_Opened">
+                            <MenuItem Name="StatusMI" Header="Статус" Style="{StaticResource MenuItemMoreData}" >
+                                <MenuItem Name="StatusIssueMI" Header="Выдан." Click="StatusIssuieMI_Click" />
+                                <Separator />
+                                <MenuItem Name="StatusCanceledMI" Header="Отменён"  Foreground="Red" Click="StatusCanceledMI_Click" />
+                            </MenuItem>
+                            <Separator Name="SeparatorMI" Margin="10,0"/>
+                            <MenuItem Name="RemoveMI" Header="Удалить" Foreground="Red" Click="RemoveMI_Click"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="IsTabStop" Value="False"/>
+                            <Setter Property="FontWeight" Value="Normal"/>
+                            <Setter Property="Foreground" Value="#434343"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#FFD4D4D4" />
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn x:Name="OrdIdDGTC" MinWidth="30" Width="30">
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="IsTabStop" Value="False"/>
+                                    <Setter Property="FontWeight"  Value="Normal"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}" >
+                                                <Border Background="White">
+                                                    <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="20,0,0,20">
+
+                                                        <Grid >
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding StatusID}"  Value="1">
+                                                        <Setter Property="Background" TargetName="Border" Value="#2E7D32"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StatusID}"  Value="2">
+                                                        <Setter Property="Background" TargetName="Border" Value="Orange"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding StatusID}"  Value="3">
+                                                        <Setter Property="Background" TargetName="Border" Value="#bc2929"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="Заказ" MinWidth="300" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DishOrder}" TextWrapping="Wrap" Margin="5,10"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="IsTabStop" Value="False"/>
+                                    <Setter Property="Foreground" Value="#434343"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#FFD4D4D4" />
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
+
+
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Цена" MinWidth="125" Width="auto" MaxWidth="150"
+                                    Binding="{Binding Price,StringFormat={}{0} ₽}"/>
+
+                        <DataGridTemplateColumn Header="Дата офрм./выдач." Width="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding DateOfReceiving, StringFormat={}О: {0:dd.MM.yyyy HH:mm}}"/>
+                                        <TextBlock Text="{Binding DateOfIssue, StringFormat={}В: {0:dd.MM.yyyy HH:mm}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+                        <DataGridTemplateColumn Header="Обслужил" MinWidth="250" Width="*" MaxWidth="450">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="75" Height="75" BorderThickness="2"  CornerRadius="50" BorderBrush="{DynamicResource MainColor}">
+                                            <Border.Background>
+                                                <ImageBrush Stretch="UniformToFill">
+                                                    <ImageBrush.ImageSource>
+                                                        <Binding Path="User.Photo" TargetNullValue="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/Portrait_Placeholder.png" />
+                                                    </ImageBrush.ImageSource>
+                                                </ImageBrush>
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" >
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1} {2}" FallbackValue="Сотрудник удалён" >
+                                                    <Binding Path="User.Surname"/>
+                                                    <Binding Path="User.Name"/>
+                                                    <Binding Path="User.Patronymic"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="IsTabStop" Value="False"/>
+                                    <Setter Property="Foreground" Value="#434343"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#FFD4D4D4" />
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Статус" Width="150"
+                                    Binding="{Binding StatusOrder.NameStatus}"/>
+                    </DataGrid.Columns>
+
+
+
+
+
+                </DataGrid>
+
+            </Grid>
+        </Border>
+
     </Grid>
 </Page>

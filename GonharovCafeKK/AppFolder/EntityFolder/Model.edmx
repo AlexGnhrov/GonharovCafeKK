@@ -20,15 +20,15 @@
           <Property Name="NameDish" Type="nvarchar" MaxLength="60" Nullable="false" />
           <Property Name="Photo" Type="varbinary(max)" />
           <Property Name="Price" Type="int" Nullable="false" />
-          <Property Name="Composition" Type="nvarchar" MaxLength="1000" />
-          <Property Name="WeightDishGR" Type="int" Nullable="false" />
-          <Property Name="Calories" Type="float" Nullable="false" />
-          <Property Name="Fat" Type="float" Nullable="false" />
-          <Property Name="Protein" Type="float" Nullable="false" />
-          <Property Name="Carb" Type="float" Nullable="false" />
-          <Property Name="isNew" Type="bit" />
-          <Property Name="isHit" Type="bit" />
-          <Property Name="isSeason" Type="bit" />
+          <Property Name="Composition" Type="nvarchar" MaxLength="3000" />
+          <Property Name="WeightDishGR" Type="int" />
+          <Property Name="Calories" Type="float" />
+          <Property Name="Fat" Type="float" />
+          <Property Name="Protein" Type="float" />
+          <Property Name="Carb" Type="float" />
+          <Property Name="isNew" Type="bit" Nullable="false" />
+          <Property Name="isHit" Type="bit" Nullable="false" />
+          <Property Name="isSeason" Type="bit" Nullable="false" />
           <Property Name="DishCategoryID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Order">
@@ -36,10 +36,11 @@
             <PropertyRef Name="OrderID" />
           </Key>
           <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Dishes" Type="nvarchar(max)" />
-          <Property Name="Price" Type="int" />
-          <Property Name="DateOfReceiving" Type="date" />
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DishOrder" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="DateOfReceiving" Type="datetime" Nullable="false" />
+          <Property Name="DateOfIssue" Type="datetime" />
+          <Property Name="UserID" Type="int" />
           <Property Name="StatusID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
@@ -51,10 +52,10 @@
         </EntityType>
         <EntityType Name="StatusOrder">
           <Key>
-            <PropertyRef Name="StatusOrderID" />
+            <PropertyRef Name="StatusOrder" />
           </Key>
-          <Property Name="StatusOrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NameStatus" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="StatusOrder" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="StatusUser">
           <Key>
@@ -105,7 +106,7 @@
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StatusOrder">
-              <PropertyRef Name="StatusOrderID" />
+              <PropertyRef Name="StatusOrder" />
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="StatusID" />
@@ -113,7 +114,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Order_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -199,15 +200,15 @@
           <Property Name="NameDish" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Price" Type="Int32" Nullable="false" />
-          <Property Name="Composition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="WeightDishGR" Type="Int32" Nullable="false" />
-          <Property Name="Calories" Type="Double" Nullable="false" />
-          <Property Name="Fat" Type="Double" Nullable="false" />
-          <Property Name="Protein" Type="Double" Nullable="false" />
-          <Property Name="Carb" Type="Double" Nullable="false" />
-          <Property Name="isNew" Type="Boolean" />
-          <Property Name="isHit" Type="Boolean" />
-          <Property Name="isSeason" Type="Boolean" />
+          <Property Name="Composition" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <Property Name="WeightDishGR" Type="Int32" />
+          <Property Name="Calories" Type="Double" />
+          <Property Name="Fat" Type="Double" />
+          <Property Name="Protein" Type="Double" />
+          <Property Name="Carb" Type="Double" />
+          <Property Name="isNew" Type="Boolean" Nullable="false" />
+          <Property Name="isHit" Type="Boolean" Nullable="false" />
+          <Property Name="isSeason" Type="Boolean" Nullable="false" />
           <Property Name="DishCategoryID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="DishCategory" Relationship="Self.FK_Menu_DishCategory" FromRole="Menu" ToRole="DishCategory" />
         </EntityType>
@@ -216,10 +217,11 @@
             <PropertyRef Name="OrderID" />
           </Key>
           <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Dishes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Int32" />
-          <Property Name="DateOfReceiving" Type="DateTime" Precision="0" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="DishOrder" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="DateOfReceiving" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateOfIssue" Type="DateTime" Precision="3" />
+          <Property Name="UserID" Type="Int32" />
           <Property Name="StatusID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="StatusOrder" Relationship="Self.FK_Order_StatusOrder" FromRole="Order" ToRole="StatusOrder" />
           <NavigationProperty Name="User" Relationship="Self.FK_Order_User" FromRole="Order" ToRole="User" />
@@ -234,10 +236,10 @@
         </EntityType>
         <EntityType Name="StatusOrder">
           <Key>
-            <PropertyRef Name="StatusOrderID" />
+            <PropertyRef Name="StatusOrder1" />
           </Key>
-          <Property Name="StatusOrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NameStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StatusOrder1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Order_StatusOrder" FromRole="StatusOrder" ToRole="Order" />
         </EntityType>
         <EntityType Name="StatusUser">
@@ -293,7 +295,7 @@
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StatusOrder">
-              <PropertyRef Name="StatusOrderID" />
+              <PropertyRef Name="StatusOrder1" />
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="StatusID" />
@@ -301,7 +303,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Order_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Order" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -404,9 +406,10 @@
             <EntityTypeMapping TypeName="DBModel.Order">
               <MappingFragment StoreEntitySet="Order">
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="Dishes" ColumnName="Dishes" />
+                <ScalarProperty Name="DishOrder" ColumnName="DishOrder" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="DateOfReceiving" ColumnName="DateOfReceiving" />
+                <ScalarProperty Name="DateOfIssue" ColumnName="DateOfIssue" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="StatusID" ColumnName="StatusID" />
               </MappingFragment>
@@ -423,7 +426,7 @@
           <EntitySetMapping Name="StatusOrder">
             <EntityTypeMapping TypeName="DBModel.StatusOrder">
               <MappingFragment StoreEntitySet="StatusOrder">
-                <ScalarProperty Name="StatusOrderID" ColumnName="StatusOrderID" />
+                <ScalarProperty Name="StatusOrder1" ColumnName="StatusOrder" />
                 <ScalarProperty Name="NameStatus" ColumnName="NameStatus" />
               </MappingFragment>
             </EntityTypeMapping>

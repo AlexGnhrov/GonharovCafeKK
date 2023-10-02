@@ -81,7 +81,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AppFolder\StaffFolder\MenuList\FieldsPage\AEDishPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AppFolder\StaffFolder\MenuList\FieldsPage\DishInfoPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AppFolder\StaffFolder\MenuList\MenuListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AppFolder\StaffFolder\MenuList\FieldsPage\PreviewOrderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -149,12 +161,24 @@
     <Compile Include="AppFolder\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppFolder\StaffFolder\MenuList\ClassFolder\FillerItemsOrderClass.cs" />
+    <Compile Include="AppFolder\StaffFolder\MenuList\FieldsPage\AEDishPage.xaml.cs">
+      <DependentUpon>AEDishPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppFolder\StaffFolder\MenuList\FieldsPage\DishInfoPage.xaml.cs">
+      <DependentUpon>DishInfoPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AppFolder\StaffFolder\MenuList\MenuListPage.xaml.cs">
       <DependentUpon>MenuListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppFolder\StaffFolder\MenuList\ClassFolder\PlacingOrderClass.cs" />
+    <Compile Include="AppFolder\StaffFolder\MenuList\FieldsPage\PreviewOrderPage.xaml.cs">
+      <DependentUpon>PreviewOrderPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppFolder\StaffFolder\OrderList\OrderListPage.xaml.cs">
       <DependentUpon>OrderListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalClassFolder\GlobalVariablesClass.cs" />
     <Compile Include="GlobalClassFolder\InsertDataClass.cs" />
     <Compile Include="GlobalClassFolder\LoadReadImageClass.cs" />
     <Compile Include="GlobalClassFolder\MBClass.cs" />
@@ -232,6 +256,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="AppFolder\ResourceFolder\Image\PhotoForDishPlaceHolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="AppFolder\ResourceFolder\Image\photo.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppFolder\EntityFolder\Model.Context.tt">

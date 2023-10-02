@@ -1,4 +1,6 @@
-﻿using GonharovCafeKK.AppFolder.ResourceFolder;
+﻿using GonharovCafeKK.AppFolder.EntityFolder;
+using GonharovCafeKK.AppFolder.ResourceFolder;
+using GonharovCafeKK.GlobalClassFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TC_Application.AppFolder.GlobalClassFolder;
 
 namespace GonharovCafeKK.AppFolder
 {
@@ -38,6 +41,25 @@ namespace GonharovCafeKK.AppFolder
 
         private void EnterBT_Click(object sender, RoutedEventArgs e)
         {
+            var user = DBEntities.GetContext().User.FirstOrDefault(u => u.Login == LoginTB.Text);
+
+            if (user == null || user.Password != PasswordPB.Password)
+            {
+                MBClass.Error("Неверный логин или пароль");
+                return;
+            }
+
+            if(user.StatusID == 2)
+            {
+                MBClass.Error("Доступ запрещён");
+                return;
+            }
+
+
+            GlobalVariablesClass.currentUserID = user.UserID;
+            GlobalVariablesClass.currentRoleID = user.RoleID;
+
+
             new MainWindow().Show();
             Close();
         }

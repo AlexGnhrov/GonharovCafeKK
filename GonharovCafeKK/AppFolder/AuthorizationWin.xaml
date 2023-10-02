@@ -86,7 +86,7 @@
                             <Image Source="ResourceFolder/Image/PasswordIcon.png" Margin="10"/>
                         </Border>
                     </Grid>
-                    <Button x:Name="EnterBT" Content="Войти" Height="45" Width="155" Margin="20" Click="EnterBT_Click"/>
+                    <Button x:Name="EnterBT" Content="Войти" Height="45" Width="155" Margin="20" IsEnabled="False" Click="EnterBT_Click"/>
                 </StackPanel>
 
             </Grid>

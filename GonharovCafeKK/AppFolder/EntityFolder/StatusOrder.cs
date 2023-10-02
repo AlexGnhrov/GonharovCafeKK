@@ -20,7 +20,7 @@ namespace GonharovCafeKK.AppFolder.EntityFolder
             this.Order = new HashSet<Order>();
         }
     
-        public int StatusOrderID { get; set; }
+        public int StatusOrder1 { get; set; }
         public string NameStatus { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -15,10 +15,11 @@ namespace GonharovCafeKK.AppFolder.EntityFolder
     public partial class Order
     {
         public int OrderID { get; set; }
-        public string Dishes { get; set; }
-        public Nullable<int> Price { get; set; }
-        public Nullable<System.DateTime> DateOfReceiving { get; set; }
-        public int UserID { get; set; }
+        public string DishOrder { get; set; }
+        public int Price { get; set; }
+        public System.DateTime DateOfReceiving { get; set; }
+        public Nullable<System.DateTime> DateOfIssue { get; set; }
+        public Nullable<int> UserID { get; set; }
         public int StatusID { get; set; }
     
         public virtual StatusOrder StatusOrder { get; set; }

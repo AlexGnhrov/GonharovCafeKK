@@ -11,186 +11,239 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="375"/>
             <ColumnDefinition />
             <ColumnDefinition Width="190"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="65"/>
+            <RowDefinition Height="55"/>
             <RowDefinition/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-
-        <Label Content="Поиск" Grid.Row="1" Grid.Column="1" FontSize="20" />
-        <TextBox x:Name="SearchTB" Grid.Column="2"  Grid.Row="1" TextChanged="SearchTB_TextChanged" Margin="10"  />
         <Button x:Name="NewWorkerBTN" Content="Новый cотрудник"
-                 Grid.Column="3" Grid.Row="1" Click="NewWorkerBTN_Click" Margin="10" />
+                 Grid.Column="3" Grid.Row="1" Click="NewWorkerBTN_Click" Margin="5" />
 
-        <DataGrid x:Name="UserListDG" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="65"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="SearchTB" Margin="5,5,0,5" Style="{DynamicResource SearcthTextBox}" KeyDown="SearchTB_KeyDown" Grid.ColumnSpan="2" TextChanged="SearchTB_TextChanged"/>
+            <Label Name="RemoveSearchTextLB" Content="❌" Grid.Column="1"
+                       HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                       FontSize="15" Cursor="Hand" Margin="3,10,3,13" MouseLeftButtonUp="Label_MouseLeftButtonUp" Visibility="Collapsed"/>
+            <Button x:Name="SearchBT" Grid.Column="2" Margin="0,5,10,5" Style="{DynamicResource SearchButton}" Click="SearchBT_Click">
+                <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/SearchIcon.png" Height="25" Width="30" VerticalAlignment="Bottom" Margin="2,2,2,-5"/>
+            </Button>
+        </Grid>
+
+        <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"  BorderThickness="0" Margin="10,0" >
+            <Grid>
+                <Border x:Name="BDRounder" BorderThickness="0" CornerRadius="5" Background="White"/>
+                
+                <DataGrid x:Name="UserListDG"
                   CanUserResizeColumns="False" CanUserDeleteRows="False" VerticalScrollBarVisibility="Auto"
                   CanUserSortColumns="False" CanUserReorderColumns="False" AutoGenerateColumns="False"
                   HeadersVisibility="Column"  SelectionMode="Single" IsReadOnly="True" Margin="0,10,0,0"
-                  MouseDoubleClick="UserListDG_MouseDoubleClick" >
-            <DataGrid.ContextMenu>
-                <ContextMenu Height="auto" >
-                    <MenuItem Name="EditMI" Header="Редактировать" Click="EditMI_Click"/>
-                    <Separator/>
-                    <MenuItem Name="RemoveMI" Header="Удалить" Foreground="Red"
-                              Click="RemoveMI_Click"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Height" Value="85"/>
-                    <Setter Property="FontSize" Value="16"/>
-                    <Setter Property="FontWeight" Value="Normal"/>
-                    <Setter Property="Foreground" Value="{StaticResource MainColor}"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                <Grid Background="{TemplateBinding Background}">
-                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="#FFD4D4D4" />
-                            <Setter Property="Foreground" Value="Black"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
+                  MouseDoubleClick="UserListDG_MouseDoubleClick" AlternatingRowBackground="#f8f8f8">
+                    <DataGrid.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=BDRounder}"/>
+                    </DataGrid.OpacityMask>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu Opened="ContextMenu_Opened">
+                            <MenuItem Name="EditMI" Header="Редактировать" Click="EditMI_Click"/>
+                            <Separator/>
+                            <MenuItem Name="StatusMI" Header="Статус" Style="{StaticResource MenuItemMoreData}">
+                                <MenuItem Name="StatusActionMI" Header="В действии" Click="StatusActionMI_Click" />
+                                <MenuItem Name="StatusBlockedMI" Header="Заблокировать"  Foreground="Red" Click="StatusBlockedMI_Click"/>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Name="RemoveMI" Header="Удалить" Foreground="Red" Click="RemoveMI_Click"/>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
 
 
-            <DataGrid.Columns>
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Height" Value="85"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="IsTabStop" Value="False"/>
+                            <Setter Property="FontWeight" Value="Normal"/>
+                            <Setter Property="Foreground" Value="#434343"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#FFD4D4D4" />
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
 
-                <DataGridTemplateColumn Header="Сотрудник" MinWidth="250" Width="*" MaxWidth="450">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Border Width="75" Height="75" Margin="0" Grid.Column="1"
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn x:Name="OrdIdDGTC" MinWidth="30" Width="30" MaxWidth="30" >
+                            <DataGridTextColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="IsTabStop" Value="False"/>
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="FontWeight"  Value="Normal"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="20,0,0,20">
+
+                                                    <Grid >
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                                                    </Grid>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#3E4E5A"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding StatusID}"  Value="1">
+                                            <Setter Property="Background" Value="#2E7D32"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding StatusID}"  Value="2">
+                                            <Setter Property="Background" Value="#bc2929"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.CellStyle>
+
+
+
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="Сотрудник" MinWidth="250" Width="*" MaxWidth="450">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="75" Height="75"
                                         BorderThickness="2"  CornerRadius="50" BorderBrush="{DynamicResource MainColor}">
-                                    <Border.Background>
-                                        <ImageBrush  Stretch="UniformToFill" ImageSource="{Binding Photo}"/>
-                                    </Border.Background>
-                                </Border>
-                                <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" >
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} {1} {2}" >
-                                            <Binding Path="Surname"/>
-                                            <Binding Path="Name"/>
-                                            <Binding Path="Patronymic"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                            <Border.Background>
+                                                <ImageBrush  Stretch="UniformToFill" ImageSource="{Binding Photo}"/>
+                                            </Border.Background>
+                                        </Border>
+                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" >
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1} {2}" >
+                                                    <Binding Path="Surname"/>
+                                                    <Binding Path="Name"/>
+                                                    <Binding Path="Patronymic"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="85"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="IsTabStop" Value="False"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="Foreground" Value="#434343"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#FFD4D4D4" />
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
 
-                <DataGridTextColumn Header="Логин" Width="*"
-                                    Binding="{Binding Login}"/>
-
-                <DataGridTextColumn Header="Номер телефона" Width="165"
-                                    Binding="{Binding PhoneNum}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Height" Value="85"/>
-                            <Setter Property="FontSize" Value="16"/>
-                            <Setter Property="FontWeight" Value="Normal"/>
-                            <Setter Property="Foreground" Value="{StaticResource MainColor}"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Grid Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#FFD4D4D4" />
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                        </DataGridTemplateColumn>
 
 
-                <DataGridTextColumn Header="Роль" Width="150"
-                                    Binding="{Binding Role.NameRole}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Height" Value="85"/>
-                            <Setter Property="FontSize" Value="16"/>
-                            <Setter Property="FontWeight" Value="Normal"/>
-                            <Setter Property="Foreground" Value="{StaticResource MainColor}"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Grid Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#FFD4D4D4" />
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
+                        <DataGridTemplateColumn Header="Логин" MinWidth="300" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Login}" HorizontalAlignment="Right" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="85"/>
+                                    <Setter Property="IsTabStop" Value="False"/>
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="Foreground" Value="#434343"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                <Grid Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#FFD4D4D4" />
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
 
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
+                        </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Статус" Width="150"
-                                    Binding="{Binding StatusUser.NameStatus}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Height" Value="85"/>
-                            <Setter Property="FontSize" Value="16"/>
-                            <Setter Property="FontWeight" Value="Normal"/>
-                            <Setter Property="Foreground" Value="{StaticResource MainColor}"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Grid Background="{TemplateBinding Background}">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#FFD4D4D4" />
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
+                        <DataGridTextColumn Header="Номер телефона"  Width="165"
+                                    Binding="{Binding PhoneNum}"/>
 
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
+                        <DataGridTextColumn Header="Роль" Width="150"
+                                    Binding="{Binding Role.NameRole}"/>
+
+
+
+                        <DataGridTextColumn Header="Статус" Width="150"
+                                    Binding="{Binding StatusUser.NameStatus}"/>
+
+
+                    </DataGrid.Columns>
 
 
 
 
 
-        </DataGrid>
+                </DataGrid>
+            </Grid>
+        </Border>
+        
+        
 
 
     </Grid>
