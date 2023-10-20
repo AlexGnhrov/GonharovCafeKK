@@ -37,6 +37,7 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
         int DishPriceOneCopy;
 
         bool isLoad = false;
+        bool isMash = false;
 
         public PreviewOrderPage(Frame AEFrame, MenuListPage menuListPage,
                                 EntityFolder.Menu selectedDish, DataGrid PlacinOrderDG)
@@ -68,6 +69,9 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
                 }
                 else if (selectedDish.NameDish.ToUpper().Contains("ПЕЧЁНЫЙ МЭШ"))
                 {
+                    isMash = true;
+                    AddToOrderBtn.IsEnabled = false;
+
                     AddiPanelSP.Visibility = Visibility.Visible;
 
                     AddiIngredientsSP.Visibility = Visibility.Collapsed;
@@ -75,11 +79,11 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
                     if (selectedDish.NameDish.ToUpper().Contains("СТАНДАРТ"))
                     {
                         SecondFillerCB.Visibility = Visibility.Collapsed;
-                        LoadData(true, false);
+                        LoadData(false, false);
                     }
                     else
                     {
-                        LoadData(true, true);
+                        LoadData(false, true);
                     }
 
                 }
@@ -142,7 +146,14 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
 
                     if (!isKrosha)
                     {
-                        Fitem.Price = item.Price + 999;
+                        if (item.Price <= 109)
+                        {
+                            Fitem.Price = 0;
+                        }
+                        else
+                        {
+                            Fitem.Price = item.Price / 2;
+                        }
                     }
                     else
                     {
@@ -153,11 +164,11 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
 
                 }
 
-                FirstFillerCB.ItemsSource = fillerItemsOrders.ToList();
+                FirstFillerCB.ItemsSource = fillerItemsOrders.ToList().OrderBy(u => u.Price);
 
                 if (isBig)
                 {
-                    SecondFillerCB.ItemsSource = fillerItemsOrders.ToList();
+                    SecondFillerCB.ItemsSource = fillerItemsOrders.ToList().OrderBy(u => u.Price);
                     SecondFillerCB.SelectedIndex = 0;
                 }
 
@@ -216,6 +227,27 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
 
             CountPriceOverAll();
         }
+
+
+        private void EnableButton()
+        {
+            if (isMash)
+            {
+
+                if (FirstFillerCB.Visibility == Visibility.Visible && SecondFillerCB.Visibility == Visibility.Visible)
+                {
+
+                    AddToOrderBtn.IsEnabled = SecondFillerCB.SelectedIndex > 0 && FirstFillerCB.SelectedIndex > 0;
+
+                }
+                else if (FirstFillerCB.Visibility == Visibility.Visible)
+                {
+                    AddToOrderBtn.IsEnabled = (FirstFillerCB.SelectedIndex > 0);
+                }
+            }
+        }
+
+
 
         private void DecrementAmountLB_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -345,6 +377,7 @@ namespace GonharovCafeKK.AppFolder.StaffFolder.MenuList
         {
             if (isLoad)
             {
+                EnableButton();
                 CountPriceOverAll();
             }
 

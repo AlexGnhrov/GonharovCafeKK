@@ -26,23 +26,22 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
 
             AddEditFrame.Visibility = Visibility.Visible;
 
+            InfoMainFrameB.Visibility = Visibility.Hidden;
+
             try
             {
-                var currentUser = DBEntities.GetContext().User.FirstOrDefault(u=>u.UserID == GlobalVariablesClass.currentUserID);
+                UpdateUserData();
 
-                ProfilePhotoIB.ImageSource = LoadReadImageClass.GetImageFromBytes(currentUser.Photo);
-
-                SNPworkerTBl.Text = $"{currentUser.Surname} {currentUser.Name.Remove(1)}.";
-
-                RoleNameLB.Content = currentUser.Role.NameRole;
-
-                if (currentUser.Patronymic != null)
-                    SNPworkerTBl.Text += $"{currentUser.Patronymic.Remove(1)}.";
-
-                if(GlobalVariablesClass.currentRoleID == 2)
+                if (GlobalVariablesClass.currentRoleID == 2)
                 {
                     UserListBtn.Visibility = Visibility.Collapsed;
+                    MainFrame.Navigate(new MenuListPage(AddEditFrame));
+
+                    usingBtn = MenuListBtn;
+                    usingBtn.Tag = "Using";
                 }
+
+                InfoMainFrameB.Visibility = Visibility.Visible;
 
             }
             catch (Exception ex)
@@ -57,12 +56,27 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
 
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void UpdateUserData()
         {
-           
+            try
+            {
+                var currentUser = DBEntities.GetContext().User.FirstOrDefault(u => u.UserID == GlobalVariablesClass.currentUserID);
+
+                DataContext = currentUser;
+
+                PhotoUserIB.ImageSource = LoadReadImageClass.GetImageFromBytes(currentUser.Photo);
+
+                SNPworkerTBl.Text = $"{currentUser.Surname} {currentUser.Name.Remove(1)}.";
+
+                if (currentUser.Patronymic != null)
+                    SNPworkerTBl.Text += $"{currentUser.Patronymic.Remove(1)}.";
+            }
+            catch
+            {
+
+            };
+
         }
-
-
 
         private void ExpandShrinkeColumnLB_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -75,12 +89,9 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
                 ExpandColumnLB.Visibility = Visibility.Hidden;
                 ShrinkeColumnLB.Visibility = Visibility.Visible;
 
-                PhotoUserEl.Width = 128;
-                PhotoUserEl.Height = 128;
 
-                RoleNameLB.Visibility =
-                //UserDataSP.Visibility =
-                SNPworkerTBl.Visibility =
+                AppLogoE.Margin = new Thickness(35, 0, 35, 35);
+
                 UserTB.Visibility =
                 MenuTB.Visibility =
                 OrderTB.Visibility =
@@ -96,13 +107,9 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
                 ExpandColumnLB.Visibility = Visibility.Visible;
                 ShrinkeColumnLB.Visibility = Visibility.Hidden;
 
-                PhotoUserEl.Width = 45;
-                PhotoUserEl.Height = 45;
+                AppLogoE.Margin = new Thickness(5, 10, 5, 35);
 
-                RoleNameLB.Visibility =
-                    //UserDataSP.Visibility =
-                    SNPworkerTBl.Visibility =
-                    UserTB.Visibility =
+                UserTB.Visibility =
                     MenuTB.Visibility =
                     OrderTB.Visibility =
                     ExitTB.Visibility =
@@ -128,7 +135,6 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
         {
 
 
-
             Button selectedBtn = sender as Button;
 
 
@@ -143,13 +149,13 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
             {
                 GlobalVariablesClass.isOrdering = false;
             }
-           
+
 
             switch (selectedBtn.Name)
             {
                 case "UserListBtn":
 
-                    MainFrame.Navigate(new UserListPage(AddEditFrame));
+                    MainFrame.Navigate(new UserListPage(this,AddEditFrame));
 
                     break;
                 case "MenuListBtn":
@@ -172,6 +178,8 @@ namespace GonharovCafeKK.AppFolder.ResourceFolder
 
             usingBtn = selectedBtn;
             usingBtn.Tag = "Using";
+
+            UpdateUserData();
         }
 
 

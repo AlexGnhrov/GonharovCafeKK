@@ -1,5 +1,6 @@
 ﻿using GonharovCafeKK.AdminFolder;
 using GonharovCafeKK.AppFolder.EntityFolder;
+using GonharovCafeKK.AppFolder.ResourceFolder;
 using Microsoft.Win32;
 using System;
 using System.Linq;
@@ -20,14 +21,16 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
         User user;
 
         Frame AEFrame;
+        MainWindow mainWindow;
         UserListPage userListPage;
 
 
         private string selectedPhoto = "";
 
-        public AEUserPage(Frame AEFrame ,UserListPage userListPage,User user)
+        public AEUserPage(MainWindow mainWindow, Frame AEFrame ,UserListPage userListPage,User user)
         {
             this.AEFrame = AEFrame;
+            this.mainWindow = mainWindow;
             this.userListPage = userListPage;
 
             userListPage.IsEnabled = false;
@@ -51,6 +54,7 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
                     if(user.UserID == 1)
                     {
+                        RoleCB.IsEnabled = false;
                         StatusUserCB.IsEnabled = false;
                     }
 
@@ -127,10 +131,8 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
                 user.Surname = splitSNP[0].Trim();
                 user.Name = splitSNP[1].Trim();
-                if (splitSNP.Length > 2)
-                {
-                    user.Patronymic = splitSNP[2].Trim();
-                }
+
+                user.Patronymic = splitSNP.Length > 2 ? splitSNP[2].Trim() : null;
 
                 user.PhoneNum = PhoneNumTB.Text.Trim();
                 user.RoleID = (int)RoleCB.SelectedValue;
@@ -177,15 +179,12 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
                 if (selectedPhoto != "Картинка кароче есть")
                     user.Photo = LoadReadImageClass.SetImageToBytes(selectedPhoto);
 
-
                 string[] splitSNP = SNPworkerTB.Text.Split(' ');
 
                 user.Surname = splitSNP[0].Trim();
                 user.Name = splitSNP[1].Trim();
-                if (splitSNP.Length > 2)
-                {
-                    user.Patronymic = splitSNP[2].Trim();
-                }
+
+                user.Patronymic = splitSNP.Length > 2 ? splitSNP[2].Trim() : null;
 
                 user.PhoneNum = PhoneNumTB.Text.Trim();
                 user.RoleID = (int)RoleCB.SelectedValue;
@@ -200,6 +199,8 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
                 userListPage.IsEnabled = true;
 
                 AEFrame.Navigate(null);
+
+                mainWindow.UpdateUserData();
 
             }
             catch (Exception ex)
@@ -231,11 +232,22 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
 
         private void TextBox_Changed(object sender, TextChangedEventArgs e)
         {
-
-
             if ((sender as TextBox).Name == "PhoneNumTB")
             {
                 Phone();
+            }
+            else if((sender as TextBox).Name == "SNPworkerTB")
+            {
+                string[] SplitSNP = SNPworkerTB.Text.Split(' ');
+
+                int strlen = SNPworkerTB.Text.Length;
+
+                if (SplitSNP.Length > 3)
+                {
+                    SNPworkerTB.Text = SNPworkerTB.Text.Remove(strlen - 1);
+                    SNPworkerTB.CaretIndex = strlen;
+                }
+
             }
 
             EnableButton();
@@ -315,9 +327,11 @@ namespace GonharovCafeKK.AppFolder.AdminFolder
                 string.IsNullOrWhiteSpace(SNPworkerTB.Text) ||
                 string.IsNullOrWhiteSpace(PhoneNumTB.Text) ||
                 RoleCB.SelectedValue == null ||
-                StatusUserCB.SelectedValue == null ||
-                selectedPhoto == "" || splitSNP.Length < 2 ||
-                PhoneNumTB.Text.Length < 16)
+                StatusUserCB.SelectedValue == null || 
+                selectedPhoto == "" || PhoneNumTB.Text.Length < 16 ||
+                                 (splitSNP.Length == 1 ||
+                 splitSNP.Length == 2 && splitSNP[1] == "" ||
+                 splitSNP.Length == 3 && splitSNP[2] == ""))
             {
                 AddEditBTN.IsEnabled = false;
             }

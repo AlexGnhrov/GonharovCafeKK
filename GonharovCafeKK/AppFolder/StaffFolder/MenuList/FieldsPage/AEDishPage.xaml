@@ -157,7 +157,7 @@
 
 
 
-                <Button x:Name="AddEditBtn" Content="Добавить" IsEnabled="False"
+                <Button x:Name="AddEditBtn" Background="{StaticResource SecondMainColor}" Content="Добавить" IsEnabled="False"
                         Grid.Column="1" HorizontalAlignment="Left"
                         Grid.Row="4" Width="300" Click="AddEditBtn_Click"/>
 

@@ -22,7 +22,7 @@
             <RowDefinition/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <Button x:Name="NewWorkerBTN" Content="Новый cотрудник"
+        <Button x:Name="NewWorkerBTN" Content="Новый cотрудник" Background="{StaticResource SecondMainColor}"
                  Grid.Column="3" Grid.Row="1" Click="NewWorkerBTN_Click" Margin="5" />
 
         <Grid Grid.Row="1" Grid.Column="1">
@@ -31,11 +31,12 @@
                 <ColumnDefinition Width="35"/>
                 <ColumnDefinition Width="65"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="SearchTB" Margin="5,5,0,5" Style="{DynamicResource SearcthTextBox}" KeyDown="SearchTB_KeyDown" Grid.ColumnSpan="2" TextChanged="SearchTB_TextChanged"/>
+            <TextBox x:Name="SearchTB" Margin="5,5,0,5" Style="{DynamicResource SearcthTextBox}" Grid.ColumnSpan="3" 
+                     TextChanged="SearchTB_TextChanged" KeyUp="SearchTB_KeyUp" FontFamily="Nagel" />
             <Label Name="RemoveSearchTextLB" Content="❌" Grid.Column="1"
                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                        FontSize="15" Cursor="Hand" Margin="3,10,3,13" MouseLeftButtonUp="Label_MouseLeftButtonUp" Visibility="Collapsed"/>
-            <Button x:Name="SearchBT" Grid.Column="2" Margin="0,5,10,5" Style="{DynamicResource SearchButton}" Click="SearchBT_Click">
+            <Button x:Name="SearchBT" Grid.Column="2" Margin="0,5" Style="{DynamicResource SearchButton}" Click="SearchBT_Click">
                 <Image Source="/GonharovCafeKK;component/AppFolder/ResourceFolder/Image/SearchIcon.png" Height="25" Width="30" VerticalAlignment="Bottom" Margin="2,2,2,-5"/>
             </Button>
         </Grid>

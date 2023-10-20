@@ -252,7 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="AppFolder\ResourceFolder\Image\SearchIcon.png" />
-    <Resource Include="AppFolder\ResourceFolder\Image\tyrext.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -262,6 +261,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="AppFolder\ResourceFolder\Image\photo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="AppFolder\ResourceFolder\Image\LogoAppName.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppFolder\EntityFolder\Model.Context.tt">

@@ -1,5 +1,6 @@
 ﻿using GonharovCafeKK.AppFolder.AdminFolder;
 using GonharovCafeKK.AppFolder.EntityFolder;
+using GonharovCafeKK.AppFolder.ResourceFolder;
 using System;
 using System.Linq;
 using System.Windows;
@@ -16,13 +17,14 @@ namespace GonharovCafeKK.AdminFolder
     {
         Frame AddEditFrame;
 
+        MainWindow mainWindow;
 
-
-        public UserListPage(Frame AddEditFrame)
+        public UserListPage(MainWindow mainWindow,Frame AddEditFrame)
         {
             InitializeComponent();
 
             this.AddEditFrame = AddEditFrame;
+            this.mainWindow = mainWindow;
 
             UserListDG.ItemsSource = DBEntities.GetContext().User.ToList();
         }
@@ -53,7 +55,7 @@ namespace GonharovCafeKK.AdminFolder
 
         private void NewWorkerBTN_Click(object sender, RoutedEventArgs e)
         {
-            AddEditFrame.Navigate(new AEUserPage(AddEditFrame,this ,null));
+            AddEditFrame.Navigate(new AEUserPage(mainWindow,AddEditFrame,this ,null));
         }
 
         private void EditMI_Click(object sender, RoutedEventArgs e)
@@ -106,7 +108,7 @@ namespace GonharovCafeKK.AdminFolder
         {
             if (UserListDG.SelectedItem != null)
             {
-                AddEditFrame.Navigate(new AEUserPage(AddEditFrame, this, UserListDG.SelectedItem as User));
+                AddEditFrame.Navigate(new AEUserPage(mainWindow,AddEditFrame, this, UserListDG.SelectedItem as User));
             }
         }
 
@@ -198,7 +200,7 @@ namespace GonharovCafeKK.AdminFolder
             UpdateList();
         }
 
-        private void SearchTB_KeyDown(object sender, KeyEventArgs e)
+        private void SearchTB_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Enter)
             {

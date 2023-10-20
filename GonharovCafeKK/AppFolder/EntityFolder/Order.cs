@@ -15,6 +15,7 @@ namespace GonharovCafeKK.AppFolder.EntityFolder
     public partial class Order
     {
         public int OrderID { get; set; }
+        public string NumOrder { get; set; }
         public string DishOrder { get; set; }
         public int Price { get; set; }
         public System.DateTime DateOfReceiving { get; set; }

@@ -49,9 +49,11 @@ namespace GonharovCafeKK.AppFolder
 
 
             sortList = sortList.Where(u => u.User.Surname.Contains(SearchTB.Text)
-                              || u.User.Name.Contains(SearchTB.Text)
-                              || u.User.Patronymic.Contains(SearchTB.Text)
-                              || u.StatusOrder.NameStatus.Contains(SearchTB.Text));
+                                        || u.NumOrder.Contains(SearchTB.Text)
+                                        || u.DishOrder.Contains(SearchTB.Text)
+                                        || u.User.Name.Contains(SearchTB.Text)
+                                        || u.User.Patronymic.Contains(SearchTB.Text)
+                                        || u.StatusOrder.NameStatus.Contains(SearchTB.Text));
 
             sortList = sortList.OrderByDescending(u => u.OrderID);
 
@@ -228,6 +230,14 @@ namespace GonharovCafeKK.AppFolder
             {
 
                 MBClass.Error(ex, "Ошибка смены статуса");
+            }
+        }
+
+        private void SearchTB_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                SearchBT_Click(sender, e);
             }
         }
     }

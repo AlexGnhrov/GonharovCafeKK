@@ -97,7 +97,7 @@
                                 <Label Content="Наполнители" HorizontalContentAlignment="Left" FontSize="18" Margin="0,5" />
 
                                 <ComboBox Name="FirstFillerCB" Height="80" Margin="0,5"
-                                          Width="450"
+                                          Width="450" Background="White"
                                           MaxDropDownHeight="225" ScrollViewer.CanContentScroll="False"
                                           SelectionChanged="FillerCB_SelectionChanged">
                                     <ComboBox.ItemTemplate>
@@ -188,7 +188,7 @@
                             </Grid>
                         </Border>
 
-                        <Button x:Name="AddToOrderBtn" Content="Добавить" Width="200"  Margin="5,10" Click="AddToOrderBtn_Click"/>
+                        <Button x:Name="AddToOrderBtn" Background="{StaticResource SecondMainColor}" Content="Добавить" Width="200"  Margin="5,10" Click="AddToOrderBtn_Click"/>
                     </StackPanel>
                 </Grid>
 

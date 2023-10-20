@@ -119,7 +119,7 @@
                     </StackPanel>
 
 
-                    <Button x:Name="AddEditBTN" Content="Добавить"
+                    <Button x:Name="AddEditBTN" Background="{StaticResource SecondMainColor}" Content="Добавить"
                         Grid.Column="1" Grid.Row="4" IsEnabled="False"
                         Click="AddEditBTN_Click"
                         Height="50" Width="250" 

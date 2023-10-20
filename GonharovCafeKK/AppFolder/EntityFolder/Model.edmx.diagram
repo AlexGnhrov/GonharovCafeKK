@@ -4,10 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="eadd417a01224cc28d6065c9b2d9fd1e" Name="Diagram1">
+      <Diagram DiagramId="cc5cd49be58a4bb19bdedd21714e0c0e" Name="Diagram1">
         <EntityTypeShape EntityType="DBModel.DishCategory" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBModel.Menu" Width="1.5" PointX="8" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBModel.Order" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBModel.Order" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DBModel.Role" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="DBModel.StatusOrder" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="DBModel.StatusUser" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />

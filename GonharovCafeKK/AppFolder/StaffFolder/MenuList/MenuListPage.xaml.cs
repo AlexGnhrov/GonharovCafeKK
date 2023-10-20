@@ -34,6 +34,8 @@ namespace GonharovCafeKK.AppFolder.MenuList
 
             InitializeComponent();
 
+            PlacinOrderB.Visibility = Visibility.Collapsed;
+
             listViews[0] = GrillChesseLV;
             listViews[1] = SeasonLV;
             listViews[2] = KroshkaKartoskaLV;
@@ -207,7 +209,8 @@ namespace GonharovCafeKK.AppFolder.MenuList
 
         }
 
-        private void SearchTB_KeyDown(object sender, KeyEventArgs e)
+
+        private void SearchTB_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
@@ -435,6 +438,7 @@ namespace GonharovCafeKK.AppFolder.MenuList
 
         private void AddOrderBtn_Click(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 if (MBClass.Question("Вы действительно хотите оформить заказ?"))
@@ -460,6 +464,12 @@ namespace GonharovCafeKK.AppFolder.MenuList
 
                     }
 
+                    Random r = new Random();
+
+                    string firstCH = Convert.ToChar(r.Next(65, 91)).ToString();
+                    string SecondCH = Convert.ToChar(r.Next(65, 91)).ToString();
+
+                    order.NumOrder = firstCH + SecondCH + "-" + r.Next(1, 100).ToString();
                     order.DishOrder = Dishes;
                     order.Price = Price;
                     order.DateOfReceiving = DateTime.Now;
